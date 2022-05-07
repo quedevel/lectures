@@ -14,14 +14,13 @@ public class JpaMain {
         tx.begin();
 
         try{
-            // 비영속
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
+            Member member1 = new Member(160L, "HelloAB");
+            Member member2 = new Member(161L,"HelloABC");
 
-            // 영속
-            // 사실 이때 인서트문이 나가는건 아니다!!! 영속 상태가 될 뿐
-            em.persist(member);
+            em.persist(member1);
+            em.persist(member2);
+
+            System.out.println("=====================");
 
             tx.commit();
         } catch (Exception e) {

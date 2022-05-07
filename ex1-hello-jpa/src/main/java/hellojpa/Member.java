@@ -10,6 +10,16 @@ public class Member {
     private Long id;
     private String name;
 
+
+
+    public Member(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    // Entity 기본 생성자를 가져야한다.
+    public Member() {}
+
     public Long getId() {
         return id;
     }
