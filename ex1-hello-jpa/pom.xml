@@ -20,12 +20,27 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.3.10.Final</version>
         </dependency>
-        <!-- H2 데이터베이스 -->
+        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.199</version>
+            <version>2.1.212</version>
         </dependency>
+
+        <!-- API, java.xml.bind module -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
+        <!-- Runtime, com.sun.xml.bind module -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+
     </dependencies>
 
 </project>
