@@ -14,8 +14,8 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Member member1 = new Member(160L, "HelloAB");
-            Member member2 = new Member(161L,"HelloABC");
+            Member member1 = new Member(162L, "HelloAB");
+            Member member2 = new Member(163L,"HelloABC");
 
             em.persist(member1);
             em.persist(member2);
