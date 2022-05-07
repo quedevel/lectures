@@ -14,12 +14,14 @@ public class JpaMain {
         tx.begin();
 
         try{
-            List<Member> list = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(1)
-                    .setMaxResults(10)
-                    .getResultList();
+            // 비영속
+            Member member = new Member();
+            member.setId(100L);
+            member.setName("HelloJPA");
 
-            list.stream().map(Member::getName).forEach(System.out::println);
+            // 영속
+            // 사실 이때 인서트문이 나가는건 아니다!!! 영속 상태가 될 뿐
+            em.persist(member);
 
             tx.commit();
         } catch (Exception e) {
