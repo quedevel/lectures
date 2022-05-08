@@ -6,12 +6,8 @@ public class Question2 {
     public static String solution(String str){
         String answer = "";
         char[] cArr = str.toCharArray();
-        // a : 97 z : 122
-        // A : 65 Z : 90
         for (char c : cArr) {
-            int i = (int)c;
-            String temp = i <= 122 && i >= 97? String.valueOf(c).toUpperCase() : String.valueOf(c).toLowerCase();
-            answer += temp;
+            answer += Character.isLowerCase(c)? Character.toUpperCase(c) : Character.toLowerCase(c);
         }
         return answer;
     }
