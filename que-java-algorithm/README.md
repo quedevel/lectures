@@ -13,3 +13,6 @@
 ### 🔥 [ Section8 ] DFS, BFS [click here.](https://github.com/quedevel/que-code/blob/main/que-java-algorithm/src/section8/SECTION8.md)
 ### 🔥 [ Section9 ] Greedy Algorithm [click here.](https://github.com/quedevel/que-code/blob/main/que-java-algorithm/src/section9/SECTION9.md)
 ### 🔥 [ Section10 ] dynamic programming [click here.](https://github.com/quedevel/que-code/blob/main/que-java-algorithm/src/section10/SECTION10.md)
+
+> 성공 ⭕
+> 실패 ❌
