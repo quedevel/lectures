@@ -16,6 +16,10 @@ public class Member {
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
 
+    /**
+     * FK가 있는곳을 주인으로 정하라
+     * 따라서, Team.java의 members는 mappedBy 설정을 넣어줘야한다.
+     */
     @ManyToOne
     @JoinColumn(name = "TEAM_ID")
     private Team team;
