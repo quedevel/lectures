@@ -14,6 +14,9 @@ public class Team {
 
     private String name;
 
+    /**
+     * 다대일 양방향
+     */
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
