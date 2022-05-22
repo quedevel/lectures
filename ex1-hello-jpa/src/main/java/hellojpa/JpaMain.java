@@ -16,26 +16,20 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Team t = new Team();
-            t.setName("testA");
-            em.persist(t);
 
-            Member m = new Member();
-            m.setUsername("mA");
-            m.changeTeam(t);
-            em.persist(m);
+            Movie movie = new Movie();
+            movie.setActor("actorA");
+            movie.setDirector("directorA");
+            movie.setName("Hell World");
+            movie.setPrice(10000);
 
+            em.persist(movie);
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, m.getId());
-            List<Member> members = findMember.getTeam().getMembers();
+            Movie findMovie = em.find(Movie.class, movie.getId());
 
-            for (Member member : members) {
-                System.out.println("member = " + member.getUsername());
-            }
-
-            Map<String, String> map = new LinkedHashMap<>();
+            System.out.println("findMovie = " + findMovie);
 
             tx.commit();
         } catch (Exception e) {
