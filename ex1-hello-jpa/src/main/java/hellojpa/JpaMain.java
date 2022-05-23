@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,19 +18,13 @@ public class JpaMain {
 
         try{
 
-            Movie movie = new Movie();
-            movie.setActor("actorA");
-            movie.setDirector("directorA");
-            movie.setName("Hell World");
-            movie.setPrice(10000);
+            Member member = new Member();
+            member.setUsername("KIM");
+            member.setCreatedBy("KIM");
+            member.setCreatedDate(LocalDateTime.now());
 
-            em.persist(movie);
-            em.flush();
-            em.clear();
+            em.persist(member);
 
-            Movie findMovie = em.find(Movie.class, movie.getId());
-
-            System.out.println("findMovie = " + findMovie);
 
             tx.commit();
         } catch (Exception e) {

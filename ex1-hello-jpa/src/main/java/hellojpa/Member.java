@@ -1,11 +1,9 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -14,9 +12,6 @@ public class Member {
 
     @Column(name = "USERNAME")
     private String username;
-
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
 
     /**
      * FK가 있는곳을 주인으로 정하라
