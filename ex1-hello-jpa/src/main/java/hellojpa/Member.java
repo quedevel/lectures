@@ -17,7 +17,7 @@ public class Member extends BaseEntity {
      * FK가 있는곳을 주인으로 정하라
      * 따라서, Team.java의 members는 mappedBy 설정을 넣어줘야한다.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // 가급적 지연 로딩만 사용 ( 특히 실무에서 )
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
