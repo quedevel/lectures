@@ -3,7 +3,7 @@ package hellojpa;
 import javax.persistence.*;
 
 @Entity
-public class Member extends BaseEntity {
+public class Member {
 
     @Id
     @GeneratedValue
@@ -20,6 +20,13 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY) // 가급적 지연 로딩만 사용 ( 특히 실무에서 )
     @JoinColumn(name = "TEAM_ID")
     private Team team;
+
+    @Embedded
+    private Period workPeriod;
+
+    @Embedded
+    private Address homeAddress;
+
 
     public Long getId() {
         return id;
