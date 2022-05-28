@@ -18,21 +18,21 @@ public class JpaMain {
 
         try{
 
-            Child child1 = new Child();
-            Child child2 = new Child();
+            Address address = new Address("city", "street", "1000");
 
-            Parent parent = new Parent();
-            parent.addChild(child1);
-            parent.addChild(child2);
+            Member member = new Member();
+            member.setUsername("test");
+            member.setHomeAddress(address);
+            em.persist(member);
 
-            em.persist(parent);
+            Member member1 = new Member();
+            member1.setUsername("test2");
+            member1.setHomeAddress(address);
+            em.persist(member1);
 
-            em.flush();
-            em.clear();
-
-            Parent parent1 = em.find(Parent.class, parent.getId());
-
-            parent1.getChildren().remove(0);
+            // address를 공유하므로 둘다 변경이 되버림... 따라서 setter 제거하여 불변 객체로 만들어주자.
+            // 변경은 복제하여 해당 address만 변경되도록 만들어주자
+            member.getHomeAddress().setCity("newCity");
 
             tx.commit();
         } catch (Exception e) {

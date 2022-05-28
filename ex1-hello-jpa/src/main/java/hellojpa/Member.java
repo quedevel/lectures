@@ -65,4 +65,27 @@ public class Member {
         this.team = team;
     }
 
+    public void setWorkPeriod(Period workPeriod) {
+        this.workPeriod = workPeriod;
+    }
+
+    public void setHomeAddress(Address homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
+    public void setWorkAddress(Address workAddress) {
+        this.workAddress = workAddress;
+    }
+
+    public Period getWorkPeriod() {
+        return workPeriod;
+    }
+
+    public Address getHomeAddress() {
+        return homeAddress;
+    }
+
+    public Address getWorkAddress() {
+        return workAddress;
+    }
 }
