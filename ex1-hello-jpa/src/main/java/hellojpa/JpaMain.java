@@ -18,21 +18,31 @@ public class JpaMain {
 
         try{
 
-            Address address = new Address("city", "street", "1000");
-
             Member member = new Member();
-            member.setUsername("test");
-            member.setHomeAddress(address);
+            member.setUsername("user1");
+            member.setHomeAddress(new Address("city1","street","10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("피자");
+            member.getFavoriteFoods().add("초밥");
+
+            member.getAddressHistory().add(new AddressEntity("old1","street","10000"));
+            member.getAddressHistory().add(new AddressEntity("old2","street","10000"));
+
             em.persist(member);
 
-            Member member1 = new Member();
-            member1.setUsername("test2");
-            member1.setHomeAddress(address);
-            em.persist(member1);
+            em.flush();
+            em.clear();
 
-            // address를 공유하므로 둘다 변경이 되버림... 따라서 setter 제거하여 불변 객체로 만들어주자.
-            // 변경은 복제하여 해당 address만 변경되도록 만들어주자
-            member.getHomeAddress().setCity("newCity");
+            System.out.println("================= START ====================");
+            Member findMember = em.find(Member.class, member.getId());
+
+            // 치킨 -> 한식
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+
+            findMember.getAddressHistory().remove(new AddressEntity("old1","street","10000"));
+            findMember.getAddressHistory().add(new AddressEntity("newCity1","street","10000"));
 
             tx.commit();
         } catch (Exception e) {
