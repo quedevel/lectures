@@ -15,14 +15,19 @@ public class JpaMain {
 
         try{
 
-            Member member = new Member();
-            member.setUsername("member1");
-            member.setAge(10);
-            em.persist(member);
+            for (int i = 1; i <= 100; i++) {
+                Member member = new Member();
+                member.setUsername("member"+i);
+                member.setAge(i);
+                em.persist(member);
+            }
 
-            List<MemberDTO> resultList = em.createQuery("select new jpql.MemberDTO(m.username,m.age) from Member m", MemberDTO.class).getResultList();
-            for (MemberDTO memberDTO : resultList) {
-                System.out.println(memberDTO);
+            List<Member> resultList = em.createQuery("select m from Member m order by m.age desc", Member.class)
+                    .setFirstResult(1)
+                    .setMaxResults(10).getResultList();
+
+            for (Member member1 : resultList) {
+                System.out.println("member1 = " + member1.getUsername());
             }
 
             tx.commit();
