@@ -14,6 +14,9 @@ public class Member {
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
+
     public void changeTeam(Team team){
         this.team = team;
         this.team.getMembers().add(this);
@@ -45,5 +48,13 @@ public class Member {
 
     public Team getTeam() {
         return team;
+    }
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
     }
 }
