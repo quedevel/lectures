@@ -57,4 +57,5 @@ public class Member {
     public void setType(MemberType type) {
         this.type = type;
     }
+
 }
