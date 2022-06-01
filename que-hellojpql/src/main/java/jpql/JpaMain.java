@@ -20,7 +20,7 @@ public class JpaMain {
             em.persist(team);
 
             Member member = new Member();
-            member.setUsername(null);
+            member.setUsername("관리자");
             member.setAge(10);
             member.changeTeam(team);
             member.setType(MemberType.ADMIN);
@@ -29,15 +29,28 @@ public class JpaMain {
 
             em.persist(member);
 
-            String query = "select coalesce(m.username, '이름 없는 유저') from Member m ";
+            Member member2 = new Member();
+            member2.setUsername("관리자2");
+            member2.setAge(10);
 
-            List<String> resultList = em.createQuery(query).getResultList();
+            em.persist(member2);
+
+
+            // case
+            // substring
+            // trim
+            // lower, upper
+            // length
+            // locate
+            // abs, sqrt, mod
+            // size, index
+            String query = "select function('group_concat',m.username) from Member m ";
+
+            List<String> resultList = em.createQuery(query, String.class).getResultList();
 
             for (String s : resultList) {
                 System.out.println("s = " + s);
             }
-
-
 
             tx.commit();
         } catch (Exception e) {
