@@ -48,7 +48,11 @@ public class JpaMain {
             em.flush();
             em.clear();
             
-
+            // fetch join 대상에는 별칭을 주지마!!
+            // 조회 결과가 누락될 수 있다.
+            // 패치 조인이 의도한 설계가 아니다
+            // 패치 조인은 싹 다 가져오는게 뽀인트
+            // 거르면서 조회하는게 좋을 수 있지만 패치 조인의 사상과 맞지 않는다.
             String query = "select t from Team t join fetch t.members";
 
             List<Team> resultList = em.createQuery(query, Team.class).getResultList();
