@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collection;
 import java.util.List;
 
 public class JpaMain {
@@ -32,19 +33,15 @@ public class JpaMain {
             Member member2 = new Member();
             member2.setUsername("관리자2");
             member2.setAge(10);
+            member2.changeTeam(team);
 
             em.persist(member2);
 
 
-            // case
-            // substring
-            // trim
-            // lower, upper
-            // length
-            // locate
-            // abs, sqrt, mod
-            // size, index
-            String query = "select function('group_concat',m.username) from Member m ";
+            em.flush();
+            em.clear();
+
+            String query = "select m.username from Team t join t.members m";
 
             List<String> resultList = em.createQuery(query, String.class).getResultList();
 
