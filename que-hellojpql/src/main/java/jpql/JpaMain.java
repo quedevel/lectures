@@ -45,26 +45,23 @@ public class JpaMain {
 
             em.persist(member3);
 
-            em.flush();
+
+//            벌크 연산은 영속성 컨텍스트를 무시하고 데이터베이스에 직접 쿼리
+//            벌크 연산을 먼저 실행
+
+            // flush
+            int resultCount = em.createQuery("update Member m set m.age = 20")
+                    .executeUpdate();
+
+            // 벌크 연산 수행 후 영속성 컨텍스트 초기화
             em.clear();
 
-            String query = "select m from Member m where m.username = :username";
+            // 그리고 다시 조회를 해와야한다.
+            Member m = em.find(Member.class, member.getId());
 
-//            List<Member> members = em.createQuery(query, Member.class)
-//                    .setParameter("username", "회원1").getResultList();
+            System.out.println("resultCount = " + resultCount);
 
-            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username","회원1").getResultList();
-
-//            for (Member m : members) {
-//                System.out.println("m = " + m.getUsername());
-//            }
-
-            for (Member m2 : resultList) {
-                System.out.println("m2 = " + m2.getUsername());
-            }
-
-
+            System.out.println("m = " + m.getAge());
 
             tx.commit();
         } catch (Exception e) {
