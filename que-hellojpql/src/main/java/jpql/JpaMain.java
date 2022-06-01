@@ -47,19 +47,24 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-            
-            // fetch join 대상에는 별칭을 주지마!!
-            // 조회 결과가 누락될 수 있다.
-            // 패치 조인이 의도한 설계가 아니다
-            // 패치 조인은 싹 다 가져오는게 뽀인트
-            // 거르면서 조회하는게 좋을 수 있지만 패치 조인의 사상과 맞지 않는다.
-            String query = "select t from Team t join fetch t.members";
 
-            List<Team> resultList = em.createQuery(query, Team.class).getResultList();
+            String query = "select m from Member m where m.username = :username";
 
-            for (Team s : resultList) {
-                System.out.println("s = " + s.getName() + ", " + s.getMembers().size());
+//            List<Member> members = em.createQuery(query, Member.class)
+//                    .setParameter("username", "회원1").getResultList();
+
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username","회원1").getResultList();
+
+//            for (Member m : members) {
+//                System.out.println("m = " + m.getUsername());
+//            }
+
+            for (Member m2 : resultList) {
+                System.out.println("m2 = " + m2.getUsername());
             }
+
+
 
             tx.commit();
         } catch (Exception e) {
