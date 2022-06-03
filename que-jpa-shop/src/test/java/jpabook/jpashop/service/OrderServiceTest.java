@@ -1,4 +1,4 @@
-package jpabook.jpashop.domain.service;
+package jpabook.jpashop.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
