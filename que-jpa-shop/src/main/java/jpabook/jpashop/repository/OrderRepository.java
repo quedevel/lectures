@@ -1,6 +1,8 @@
 package jpabook.jpashop.repository;
 
-import jpabook.jpashop.domain.Member;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDTO;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +30,30 @@ public class OrderRepository {
     }
 
     public List<Order> findAll(OrderSearch orderSearch){
-        String jpql = "select o from Order o join o.member m";
-        return em.createQuery(jpql, Order.class)
-                .setMaxResults(1000) // 최대 1000건
-                .getResultList();
+        QOrder order = QOrder.order;
+        QMember member = QMember.member;
+
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        return query
+                .select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()),
+                        nameContains(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    private BooleanExpression nameContains(String name) {
+        if (!StringUtils.hasText(name)) return null;
+        return QMember.member.name.contains(name);
+    }
+
+    private BooleanExpression statusEq(OrderStatus status){
+        if (status == null){
+            return null;
+        }
+        return QOrder.order.status.eq(status);
     }
 
     /**
