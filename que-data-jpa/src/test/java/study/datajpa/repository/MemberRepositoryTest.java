@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.Test;
 import study.datajpa.entity.Member;
 
+import java.util.List;
+
 @SpringBootTest
 @Transactional
 class MemberRepositoryTest {
@@ -29,5 +31,31 @@ class MemberRepositoryTest {
         assertThat(findMember.getId()).isEqualTo(savedMember.getId());
         assertThat(findMember.getUsername()).isEqualTo(savedMember.getUsername());
         assertThat(findMember).isEqualTo(savedMember);
+    }
+
+    @Test
+    void basicCRUD() throws Exception {
+        //given
+        Member member = new Member("member1");
+        Member member1 = new Member("member2");
+        memberRepository.save(member);
+        memberRepository.save(member1);
+
+        //when
+        Member findMember1 = memberRepository.findById(member.getId()).get();
+        Member findMember2 = memberRepository.findById(member1.getId()).get();
+
+        //then
+        assertThat(member).isEqualTo(findMember1);
+        assertThat(member1).isEqualTo(findMember2);
+
+        List<Member> all = memberRepository.findAll();
+        assertThat(all.size()).isEqualTo(2);
+
+        memberRepository.delete(member);
+        memberRepository.delete(member1);
+
+        long deletedCount = memberRepository.count();
+        assertThat(deletedCount).isEqualTo(0);
     }
 }
