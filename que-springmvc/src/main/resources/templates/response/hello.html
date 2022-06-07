@@ -5,6 +5,13 @@
     <title>Title</title>
 </head>
 <body>
-<p th:text="${data}">empty</p>
+[# th:each="user : ${users}"]
+<p th:text="${user}"></p>
+[/]
+<scrip th:inline="javascript">
+[# th:each="user : ${users}"]
+
+[/]
+</scrip>
 </body>
 </html>
