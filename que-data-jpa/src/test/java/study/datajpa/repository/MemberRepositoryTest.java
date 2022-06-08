@@ -1,11 +1,13 @@
 package study.datajpa.repository;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.junit.jupiter.api.Test;
 import study.datajpa.dto.MemberDTO;
@@ -14,7 +16,6 @@ import study.datajpa.entity.Team;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootTest
 @Transactional
@@ -164,18 +165,34 @@ class MemberRepositoryTest {
     }
 
     @Test
-    void testReturnType() throws Exception {
+    void testPaging() throws Exception {
         //given
-        Member member1 = new Member("AAA", 10);
-        Member member2 = new Member("BBB", 20);
-        memberRepository.save(member1);
-        memberRepository.save(member2);
+        memberRepository.save(new Member("member1",10));
+        memberRepository.save(new Member("member2",10));
+        memberRepository.save(new Member("member3",10));
+        memberRepository.save(new Member("member4",10));
+        memberRepository.save(new Member("member5",10));
+
+        int age = 10;
+        int offset = 0;
+        int limit = 3;
+
+        PageRequest pageRequest = PageRequest.of(offset, limit, Sort.by(Sort.Direction.DESC, "username"));
 
         //when
-        Member aaa = memberRepository.findMemberByUsername("asdfasdfadf");
-        System.out.println("aaa = " + aaa);
+        Page<Member> page = memberRepository.findByAge(age, pageRequest);
+
+        Page<MemberDTO> toMap = page.map(member -> new MemberDTO(member.getId(), member.getUsername(), member.getTeam().getName()));
 
         //then
+        List<Member> members = page.getContent();
+        long totalElements = page.getTotalElements();
 
+        assertThat(members.size()).isEqualTo(3);
+        assertThat(page.getTotalElements()).isEqualTo(5);
+        assertThat(page.getNumber()).isEqualTo(0);
+        assertThat(page.getTotalPages()).isEqualTo(2);
+        assertThat(page.isFirst()).isTrue();
+        assertThat(page.hasNext()).isTrue();
     }
 }
