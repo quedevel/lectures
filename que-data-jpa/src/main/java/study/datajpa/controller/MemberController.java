@@ -42,10 +42,10 @@ public class MemberController {
         return toMap;
     }
 
-    @PostConstruct
-    public void init(){
-        IntStream.range(1, 100).forEach(i -> {
-            memberRepository.save(new Member("user"+i, i));
-        });
-    }
+//    @PostConstruct
+//    public void init(){
+//        IntStream.range(1, 100).forEach(i -> {
+//            memberRepository.save(new Member("user"+i, i));
+//        });
+//    }
 }
