@@ -321,7 +321,30 @@ class MemberRepositoryTest {
         System.out.println("member.getCreatedDate() = " + member.getCreatedDate());
         System.out.println("member.getLastModifiedBy() = " + member.getLastModifiedBy());
         System.out.println("member.getUpdatedDate() = " + member.getLastModifiedDate());
-        
+
+    }
+
+    @Test
+    void projections() throws Exception {
+        //given
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", teamA);
+        Member m2 = new Member("m2", teamA);
+        em.persist(m1);
+        em.persist(m2);
+
+        em.flush();
+        em.clear();
+
+        //when
+        List<NestedClosedProjections> result = memberRepository.findProjectionsByUsername("m1", NestedClosedProjections.class);
+
+        for (NestedClosedProjections usernameOnly : result) {
+            System.out.println("usernameOnly = " + usernameOnly.getUsername());
+            System.out.println("usernameOnly = " + usernameOnly.getTeam());
+        }
 
     }
 }
