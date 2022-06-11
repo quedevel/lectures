@@ -2,29 +2,27 @@ package study.querydsl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.entity.Member;
-import study.querydsl.entity.QMember;
 import study.querydsl.entity.Team;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static study.querydsl.entity.QMember.member;
 
+@SuppressWarnings("deprecation")
 @SpringBootTest
 @Transactional
 public class QuerydslBasicTest {
 
-    @Autowired
-    EntityManager em;
+    @PersistenceContext EntityManager em;
 
     JPAQueryFactory queryFactory;
 
@@ -67,6 +65,7 @@ public class QuerydslBasicTest {
                 .where(member.username.eq("member1"))
                 .fetchOne();
 
+        assert findMember != null;
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
 
@@ -76,16 +75,18 @@ public class QuerydslBasicTest {
                 .selectFrom(member)
                 .where(member.username.eq("member1").and(member.age.eq(10)))
                 .fetchOne();
+        assert findMember != null;
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
 
-    // where 조건의 and인 경우는 체이닝도 가능하지만 ,로도 가능하다.
+    // where 조건의 and 경우는 체이닝도 가능하지만 ,로도 가능하다.
     @Test
     void searchAndParam() {
         Member findMember = queryFactory
                 .selectFrom(member)
                 .where(member.username.eq("member1"), (member.age.eq(10)))
                 .fetchOne();
+        assert findMember != null;
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
 
@@ -110,7 +111,7 @@ public class QuerydslBasicTest {
 //        fetchResults.getTotal();
 //        List<Member> members = fetchResults.getResults();
 
-        long fetchCount = queryFactory
+        queryFactory
                 .selectFrom(member)
                 .fetchCount();
     }
@@ -139,5 +140,20 @@ public class QuerydslBasicTest {
         assertThat(member5.getUsername()).isEqualTo("member5");
         assertThat(member6.getUsername()).isEqualTo("member6");
         assertThat(memberNull.getUsername()).isNull();
+    }
+
+    @Test
+    void paging() {
+        QueryResults<Member> queryResults = queryFactory
+                .selectFrom(member)
+                .orderBy(member.username.desc())
+                .offset(1)
+                .limit(2)
+                .fetchResults();
+
+        assertThat(queryResults.getTotal()).isEqualTo(4);
+        assertThat(queryResults.getLimit()).isEqualTo(2);
+        assertThat(queryResults.getOffset()).isEqualTo(1);
+        assertThat(queryResults.getResults().size()).isEqualTo(2);
     }
 }
