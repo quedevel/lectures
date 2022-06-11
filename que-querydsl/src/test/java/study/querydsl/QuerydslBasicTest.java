@@ -66,4 +66,23 @@ public class QuerydslBasicTest {
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
     }
+
+    @Test
+    void search() {
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1").and(member.age.eq(10)))
+                .fetchOne();
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
+
+    // where 조건의 and인 경우는 체이닝도 가능하지만 ,로도 가능하다.
+    @Test
+    void searchAndParam() {
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"), (member.age.eq(10)))
+                .fetchOne();
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
 }
