@@ -45,7 +45,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    void startJPQL() throws Exception {
+    void startJPQL(){
         // member1을 찾자.
         String qlString = "select m from Member m " +
                            "where m.username = :username";
@@ -57,13 +57,11 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    void startQuerydsl() throws Exception {
-        QMember m = member;
-
+    void startQuerydsl(){
         Member findMember = queryFactory
-                .selectFrom(m)
-                .from(m)
-                .where(m.username.eq("member1"))
+                .selectFrom(member)
+                .from(member)
+                .where(member.username.eq("member1"))
                 .fetchOne();
 
         assertThat(findMember.getUsername()).isEqualTo("member1");
