@@ -2,9 +2,10 @@ package hello.querestapi.events;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,10 @@ public class EventController {
     private final ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody EventDto eventDto){
+    public ResponseEntity createEvent(@RequestBody @Validated EventDto eventDto, Errors errors){
+        if (errors.hasErrors()){
+            return ResponseEntity.badRequest().build();
+        }
         Event event = modelMapper.map(eventDto, Event.class);
         Event newEvent = eventRepository.save(event);
         URI createdUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();

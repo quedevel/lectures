@@ -3,11 +3,9 @@ package hello.querestapi.events;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -61,6 +59,7 @@ public class EventControllerTests {
 
     @Test
     void createEvent_BadRequest() throws Exception {
+        // given when
         Event event = Event.builder()
                 .id(100)
                 .name("spring")
@@ -78,6 +77,7 @@ public class EventControllerTests {
                 .eventStatus(EventStatus.PUBLISHED)
                 .build();
 
+        // then
         mockMvc.perform(post("/api/events")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaTypes.HAL_JSON)
@@ -85,6 +85,18 @@ public class EventControllerTests {
                 .andDo(print())
                 .andExpect(status().isBadRequest())
         ;
+    }
+
+    @Test
+    void createEvent_BadRequest_Empty_Input() throws Exception {
+        //given when
+        EventDto eventDto = EventDto.builder().build();
+
+        //then
+        mockMvc.perform(post("/api/events")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto)))
+                .andExpect(status().isBadRequest());
     }
 
 }
