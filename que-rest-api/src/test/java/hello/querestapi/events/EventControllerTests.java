@@ -21,9 +21,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class EventControllerTests {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     MockMvc mockMvc;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     ObjectMapper objectMapper;
 
@@ -32,10 +34,10 @@ public class EventControllerTests {
         EventDto event = EventDto.builder()
                 .name("spring")
                 .description("rest api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
-                .closeEnrollmentDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
-                .beginEventDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
-                .endEventDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .beginEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .endEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
@@ -64,10 +66,10 @@ public class EventControllerTests {
                 .id(100)
                 .name("spring")
                 .description("rest api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
-                .closeEnrollmentDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
-                .beginEventDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
-                .endEventDateTime(LocalDateTime.of(2022, 06, 17, 15, 20))
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .beginEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .endEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
@@ -90,7 +92,18 @@ public class EventControllerTests {
     @Test
     void createEvent_BadRequest_Empty_Input() throws Exception {
         //given when
-        EventDto eventDto = EventDto.builder().build();
+        EventDto eventDto = EventDto.builder()
+                .name("Spring")
+                .description("REST API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .beginEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .endEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .basePrice(10000)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("강남역")
+                .build();
 
         //then
         mockMvc.perform(post("/api/events")
