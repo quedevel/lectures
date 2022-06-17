@@ -23,4 +23,5 @@ public class Event {
     private boolean offline;
     private boolean free;
     private EventStatus eventStatus;
+
 }
