@@ -74,7 +74,8 @@ public class EventControllerTests {
                             links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("query-events").description("link to query events"),
-                                linkWithRel("update-event").description("link to update event")
+                                linkWithRel("update-event").description("link to update event"),
+                                linkWithRel("profile").description("profile")
                             ),
                             requestHeaders(
                                     headerWithName(HttpHeaders.ACCEPT).description("accept header"),
@@ -113,7 +114,8 @@ public class EventControllerTests {
                                     fieldWithPath("eventStatus").description("event status"),
                                     fieldWithPath("_links.query-events.href").description("link to query event"),
                                     fieldWithPath("_links.self.href").description("link to self"),
-                                    fieldWithPath("_links.update-event.href").description("link to update event")
+                                    fieldWithPath("_links.update-event.href").description("link to update event"),
+                                    fieldWithPath("_links.profile.href").description("link to profile")
                             )
                         )
                 )
@@ -187,9 +189,10 @@ public class EventControllerTests {
                         .content(objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].objectName").exists())
-                .andExpect(jsonPath("$[0].defaultMessage").exists())
-                .andExpect(jsonPath("$[0].code").exists())
+                .andExpect(jsonPath("errors[0].objectName").exists())
+                .andExpect(jsonPath("errors[0].defaultMessage").exists())
+                .andExpect(jsonPath("errors[0].code").exists())
+                .andExpect(jsonPath("_links.index").exists())
         ;
     }
 
