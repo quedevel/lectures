@@ -12,9 +12,4 @@ public class QueRestApiApplication {
 		SpringApplication.run(QueRestApiApplication.class, args);
 	}
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
-
 }
