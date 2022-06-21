@@ -12,6 +12,7 @@ import hello.querestapi.accounts.Account;
 import hello.querestapi.accounts.AccountRole;
 import hello.querestapi.accounts.AccountService;
 import hello.querestapi.common.BaseControllerTest;
+import hello.querestapi.commons.AppProperties;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +29,9 @@ class AuthServerConfigTest extends BaseControllerTest {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Test
     @DisplayName("인증 토큰을 발급 받는 테스트")
     void getAuthToken() throws Exception {
@@ -42,8 +46,8 @@ class AuthServerConfigTest extends BaseControllerTest {
 
         accountService.saveAccount(account);
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
+        String clientId = appProperties.getClientId();
+        String clientSecret = appProperties.getClientSecret();
 
         //when
         ResultActions actions = mockMvc.perform(post("/oauth/token")

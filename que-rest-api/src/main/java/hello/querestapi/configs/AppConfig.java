@@ -1,8 +1,10 @@
 package hello.querestapi.configs;
 
 import hello.querestapi.accounts.Account;
+import hello.querestapi.accounts.AccountRepository;
 import hello.querestapi.accounts.AccountRole;
 import hello.querestapi.accounts.AccountService;
+import hello.querestapi.commons.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -34,14 +36,25 @@ public class AppConfig {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                Account quedevel = Account.builder()
-                        .email("quedevel@naver.com")
-                        .password("quedevel")
+
+                Account admin = Account.builder()
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
                         .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
                         .build();
-                accountService.saveAccount(quedevel);
+                accountService.saveAccount(admin);
+
+                Account user = Account.builder()
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .roles(Set.of(AccountRole.USER))
+                        .build();
+                accountService.saveAccount(user);
             }
         };
     }

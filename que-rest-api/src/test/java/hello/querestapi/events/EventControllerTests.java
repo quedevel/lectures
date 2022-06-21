@@ -5,6 +5,7 @@ import hello.querestapi.accounts.AccountRepository;
 import hello.querestapi.accounts.AccountRole;
 import hello.querestapi.accounts.AccountService;
 import hello.querestapi.common.BaseControllerTest;
+import hello.querestapi.commons.AppProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,9 @@ public class EventControllerTests extends BaseControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    AppProperties appProperties;
 
     @BeforeEach
     public void setUp(){
@@ -147,8 +151,8 @@ public class EventControllerTests extends BaseControllerTest {
 
         accountService.saveAccount(account);
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
+        String clientId = appProperties.getClientId();
+        String clientSecret = appProperties.getClientSecret();
 
         ResultActions resultActions = mockMvc.perform(post("/oauth/token")
                 .with(httpBasic(clientId, clientSecret))
