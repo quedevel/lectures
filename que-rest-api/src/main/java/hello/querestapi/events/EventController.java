@@ -121,7 +121,7 @@ public class EventController {
         }
 
         Event event = eventOptional.get();
-        if (!event.getManager().equals(account)){
+        if (!account.equals(event.getManager())){
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }
 

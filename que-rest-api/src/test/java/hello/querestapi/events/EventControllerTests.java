@@ -140,15 +140,33 @@ public class EventControllerTests extends BaseControllerTest {
         return "Bearer " + getAccessToken();
     }
 
-    private String getAccessToken() throws Exception {
-        String username = "quedevel@email.com";
-        String password = "quedevel";
-        Account account = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                .build();
+    private String getBearerToken(boolean needAnAccount) throws Exception {
+        return "Bearer " + getAccessToken(needAnAccount);
+    }
 
+    private String getAccessToken(boolean needAnAccount) throws Exception {
+        if (needAnAccount){
+            Account account = createAccount();
+            accountService.saveAccount(account);
+        }
+
+        String clientId = appProperties.getClientId();
+        String clientSecret = appProperties.getClientSecret();
+
+        ResultActions resultActions = mockMvc.perform(post("/oauth/token")
+                .with(httpBasic(clientId, clientSecret))
+                .param("username", appProperties.getAdminUsername())
+                .param("password", appProperties.getAdminPassword())
+                .param("grant_type", "password"));
+
+        MockHttpServletResponse response = resultActions.andReturn().getResponse();
+        String content = response.getContentAsString();
+        Jackson2JsonParser parser = new Jackson2JsonParser();
+        return parser.parseMap(content).get("access_token").toString();
+    }
+
+    private String getAccessToken() throws Exception {
+        Account account = createAccount();
         accountService.saveAccount(account);
 
         String clientId = appProperties.getClientId();
@@ -156,14 +174,24 @@ public class EventControllerTests extends BaseControllerTest {
 
         ResultActions resultActions = mockMvc.perform(post("/oauth/token")
                 .with(httpBasic(clientId, clientSecret))
-                .param("username", username)
-                .param("password", password)
+                .param("username", appProperties.getAdminUsername())
+                .param("password", appProperties.getAdminPassword())
                 .param("grant_type", "password"));
 
         MockHttpServletResponse response = resultActions.andReturn().getResponse();
         String content = response.getContentAsString();
         Jackson2JsonParser parser = new Jackson2JsonParser();
         return parser.parseMap(content).get("access_token").toString();
+    }
+
+
+    private Account createAccount() {
+        Account account = Account.builder()
+                .email(appProperties.getAdminUsername())
+                .password(appProperties.getAdminPassword())
+                .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                .build();
+        return account;
     }
 
     @Test
@@ -285,11 +313,40 @@ public class EventControllerTests extends BaseControllerTest {
         return eventRepository.save(event);
     }
 
+    private Event generateEvent(int i, Account account) {
+        Event event = createEventBuilder(i);
+        if (account != null){
+            event.setManager(account);
+        }
+        return eventRepository.save(event);
+    }
+
+    private Event createEventBuilder(int i) {
+        Event event = Event.builder()
+                .name("spring" + i)
+                .description("rest api")
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .beginEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .endEventDateTime(LocalDateTime.of(2022, 6, 17, 15, 20))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("강남역")
+                .free(false)
+                .offline(true)
+                .eventStatus(EventStatus.DRAFT)
+                .build();
+        return event;
+    }
+
     @Test
     @DisplayName("기존의 이벤트를 하나 조회하기")
     void getEvent() throws Exception {
         //given
-        Event event = this.generateEvent(100);
+        Account account = this.createAccount();
+        accountService.saveAccount(account);
+        Event event = this.generateEvent(100, account);
 
         //when
         ResultActions actions = this.mockMvc.perform(get("/api/events/{id}", event.getId()));
@@ -317,7 +374,9 @@ public class EventControllerTests extends BaseControllerTest {
     @DisplayName("이벤트를 정상적으로 수정하기")
     void updateEvent() throws Exception {
         //given
-        Event event = this.generateEvent(100);
+        Account account = this.createAccount();
+        accountService.saveAccount(account);
+        Event event = this.generateEvent(100, account);
         String eventName = "Update Event";
         EventDto eventDto = modelMapper.map(event, EventDto.class);
         eventDto.setName(eventName);
@@ -325,7 +384,7 @@ public class EventControllerTests extends BaseControllerTest {
         //when
         ResultActions actions =
                 this.mockMvc.perform(put("/api/events/{id}", event.getId())
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(false))
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(eventDto))
                 );
