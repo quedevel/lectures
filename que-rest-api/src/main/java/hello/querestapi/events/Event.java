@@ -1,6 +1,8 @@
 package hello.querestapi.events;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import hello.querestapi.accounts.Account;
+import hello.querestapi.accounts.AccountSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,6 +32,7 @@ public class Event {
     private EventStatus eventStatus = EventStatus.DRAFT;
 
     @ManyToOne
+    @JsonSerialize(using = AccountSerializer.class)
     private Account manager;
 
     public void update(){
