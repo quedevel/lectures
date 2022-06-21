@@ -30,8 +30,8 @@ class AccountServiceTest {
     @Test
     void findByUsername() {
         //given
-        String password = "quedevel";
-        String email = "quedevel@naver.com";
+        String password = "quedevel2";
+        String email = "quedevel2@naver.com";
         Account actual = Account.builder()
                 .email(email)
                 .password(password)
