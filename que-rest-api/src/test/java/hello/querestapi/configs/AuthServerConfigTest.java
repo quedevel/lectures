@@ -2,6 +2,7 @@ package hello.querestapi.configs;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -55,7 +56,8 @@ class AuthServerConfigTest extends BaseControllerTest {
                         .param("username", username)
                         .param("password", password)
                         .param("grant_type", "password"))
-                .andDo(print());
+                .andDo(print())
+                .andDo(document("oauth-token"));
 
         //then
         actions.andExpect(status().isOk())
