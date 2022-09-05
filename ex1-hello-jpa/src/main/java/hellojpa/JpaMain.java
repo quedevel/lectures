@@ -20,14 +20,24 @@ public class JpaMain {
         tx.begin();
 
         try{
-            //Criteria 사용 준비
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Member> query = cb.createQuery(Member.class);
-            Root<Member> m = query.from(Member.class);
+            System.out.println("----- entity manager test start -----");
 
-            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "%kim%"));
+            User user1 = new User();
+            user1.setUsername("user1");
+            em.persist(user1);
 
-            List<Member> resultList = em.createQuery(cq).getResultList();
+            System.out.println("----- persist user -----");
+
+            User user2 = new User();
+            user2.setUsername("user2");
+            em.persist(user2);
+
+            System.out.println("----- persist user2 -----");
+
+            em.flush();
+            em.clear();
+
+            System.out.println("----- flush and clear -----");
 
             tx.commit();
         } catch (Exception e) {
