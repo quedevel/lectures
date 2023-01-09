@@ -15,11 +15,15 @@ spring:
       matching-strategy: ant_path_matcher
   messages:
     basename: messages
-  security:
-    user:
-      name: user
-      password: 1234
-
+#  security:
+#    user:
+#      name: user
+#      password: 1234
+  jpa:
+    show-sql: true
+  h2:
+    console:
+      enabled: true
 
 management:
   endpoints:
