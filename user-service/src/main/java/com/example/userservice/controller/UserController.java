@@ -26,9 +26,9 @@ public class UserController {
 
     private Greeting greeting;
 
-    @GetMapping("/heath_check")
+    @GetMapping("/user-service/health_check")
     public String status(){
-        return "It's Working in User Service";
+        return String.format("It's Working in User Service on PORT %s",env.getProperty("local.server.port"));
     }
 
     @GetMapping("/welcome")
