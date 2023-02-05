@@ -33,11 +33,4 @@ public class CatalogEntity implements Serializable {
     @Column(nullable = false, updatable = false, insertable = true)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
     private Date createdAt;
-
-    public CatalogEntity(String productId, String productName, Integer stock, Integer unitPrice){
-        this.productId = productId;
-        this.productName = productName;
-        this.stock = stock;
-        this.unitPrice = unitPrice;
-    }
 }
