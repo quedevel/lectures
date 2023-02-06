@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/user-service/")
 @AllArgsConstructor
 public class UserController {
 
@@ -70,7 +69,6 @@ public class UserController {
         UserDto userDto = userService.getUserByUserId(userId);
 
         ResponseUser result = new ModelMapper().map(userDto, ResponseUser.class);
-
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
