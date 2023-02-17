@@ -21,7 +21,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     private final Environment env;
 
-    private static final String IP_ADDRESS = "192.168.125.82";
+    private static final String IP_ADDRESS = "172.30.1.17"; //"192.168.125.82";
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
