@@ -29,7 +29,6 @@ public class OrderController {
         return String.format("It's Working in User Service on PORT %s",env.getProperty("local.server.port"));
     }
 
-
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable String userId,
                                                      @RequestBody RequestOrder orderDetail){
