@@ -71,14 +71,7 @@ public class UserService implements UserDetailsService {
 //        List<ResponseOrder> orderList = orderListResponse.getBody();
 
         /* Feign Client */
-        List<ResponseOrder> orderList = null;
-
-        try {
-            orderList = orderServiceClient.getOrders(userId);
-        } catch (FeignException e){
-            log.error(e.getMessage());
-        }
-
+        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
         userDto.setOrders(orderList);
 
         return userDto;
