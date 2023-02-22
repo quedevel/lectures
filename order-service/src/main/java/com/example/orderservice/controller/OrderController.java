@@ -24,7 +24,7 @@ public class OrderController {
 
     private final Environment env;
     private final OrderService orderService;
-    private KafkaProducer kafkaProducer;
+    private final KafkaProducer kafkaProducer;
 
     @GetMapping("/health_check")
     public String status(){
@@ -44,7 +44,7 @@ public class OrderController {
         ResponseOrder responseOrder = mapper.map(createdOrder, ResponseOrder.class);
 
         /* send this order to the kafka */
-        kafkaProducer.send("example-category-topic", orderDto);
+        kafkaProducer.send("example-catalog-topic", orderDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
     }
