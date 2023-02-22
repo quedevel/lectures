@@ -25,7 +25,7 @@ public class KafkaConsumer {
         Map<Object,Object> map = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
         try{
-            map = mapper.readValue(kafkaMessage, new TypeReference<Map<Object, Object>>() {});
+            map = mapper.readValue(kafkaMessage, new TypeReference<>() {});
         } catch (Exception e) {
             e.printStackTrace();
         }
