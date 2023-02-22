@@ -1,5 +1,7 @@
 package com.example.catalogservice.jpa;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -9,9 +11,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
+@Builder
 @Entity
 @Table(name = "catalog")
 @NoArgsConstructor
+@AllArgsConstructor
 public class CatalogEntity implements Serializable {
 
     @Id
