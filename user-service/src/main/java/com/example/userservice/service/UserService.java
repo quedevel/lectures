@@ -75,10 +75,12 @@ public class UserService implements UserDetailsService {
 
         /* Feign Client */
 //        List<ResponseOrder> orderList = orderServiceClient.getOrders(userId);
+        log.info("Before call orders microservice");
         CircuitBreaker circuitbreaker = circuitBreakerFactory.create("circuitbreaker");
         List<ResponseOrder> orderList = circuitbreaker.run(() -> orderServiceClient.getOrders(userId),
                 throwable -> new ArrayList<>());
         userDto.setOrders(orderList);
+        log.info("after called orders microservice");
 
         return userDto;
     }
