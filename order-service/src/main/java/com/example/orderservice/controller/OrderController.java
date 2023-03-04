@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +54,7 @@ public class OrderController {
 //        orderDto.setTotalPrice(orderDetail.getQty() * orderDetail.getUnitPrice());
 
         /* send this order to the kafka */
-//        kafkaProducer.send("example-catalog-topic", orderDto);
+        kafkaProducer.send("example-catalog-topic", orderDto);
 //        orderProducer.send("orders", orderDto);
 
 
@@ -73,14 +72,13 @@ public class OrderController {
         List<ResponseOrder> result = new ArrayList<>();
 
         orders.forEach(v -> result.add(new ModelMapper().map(v, ResponseOrder.class)));
-
-        try {
-            Thread.sleep(1000);
-            throw new Exception("장애 발생");
-        } catch (InterruptedException e) {
-            log.warn(e.getMessage());
-        }
-
+//
+//        try {
+//            Thread.sleep(1000);
+//            throw new Exception("장애 발생");
+//        } catch (InterruptedException e) {
+//            log.warn(e.getMessage());
+//        }
 
         log.info("after retrieved order data");
 
