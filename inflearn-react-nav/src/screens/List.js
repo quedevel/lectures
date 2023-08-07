@@ -15,16 +15,16 @@ const StyledText = styled.Text`
 
 const items = [
   {id: 1, name: 'React Native'},
-  {id: 2, name: 'React '},
-  {id: 3, name: ' Native'},
+  {id: 2, name: 'React'},
+  {id: 3, name: 'Native'},
 ]
 
-const List = () => {
+const List = ({navigation}) => {
   return (
     <Container>
       <StyledText>List</StyledText>
       {items.map(({id, name}) =>
-        <Button key={id} title={name} />
+        <Button key={id} title={name} onPress={() => navigation.navigate('Chat', {id, name})}/>
       )}
     </Container>
   )
