@@ -1,7 +1,8 @@
 import React, {useContext} from "react";
 import {ThemeContext} from "styled-components/native";
 import {createStackNavigator} from '@react-navigation/stack'
-import {Profile} from '../screens'
+import {Profile, ChannelCreation, ChannelList, Channel} from '../screens'
+import Home from "./Home";
 
 const Stack = createStackNavigator()
 
@@ -14,10 +15,12 @@ const Main = () => {
         headerTitleAlign: 'center',
         headerTintColor: theme.text,
         headerBackTitleVisible: false,
-        cardStyle: { backgroundColor: theme.background }
+        cardStyle: {backgroundColor: theme.background}
       }}
     >
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Home" component={Home}/>
+      <Stack.Screen name="ChannelCreation" component={ChannelCreation}/>
+      <Stack.Screen name="Channel" component={Channel}/>
     </Stack.Navigator>
   )
 }

@@ -18,6 +18,8 @@ const Label = styled.Text`
 const StyledInput = styled.TextInput.attrs(({theme}) => ({
   placeholderTextColor: theme.inputPlaceHolder
 }))`
+  background-color: ${({theme, editable}) => editable ? theme.inputBackground : theme.inputDisabled};
+  color: ${({theme}) => theme.text};
   padding: 20px 10px;
   font-size: 16px;
   border: 1px solid ${({theme, isFocused}) => isFocused ? theme.text : theme.inputBorder};
@@ -33,7 +35,8 @@ const Input = forwardRef(
      placeHolder,
      returnKeyType,
      maxLength,
-     isPassword
+     isPassword,
+     disabled
    },
    ref
   ) => {
@@ -61,6 +64,7 @@ const Input = forwardRef(
           isFoucsed={isFocused}
           onFocus={() => setIsFocused(true)}
           secureTextEntry={isPassword}
+          editable={!disabled}
         />
       </Container>
     )
@@ -81,6 +85,7 @@ Input.propTypes = {
   returnKeyType: PropTypes.oneOf(['done', 'next']),
   maxLength: PropTypes.number,
   isPassword: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
 
 export default Input

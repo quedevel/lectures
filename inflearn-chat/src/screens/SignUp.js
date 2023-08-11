@@ -43,7 +43,7 @@ const SignUp = ({navigation}) => {
   }, [email, name, password, passwordConfirm, errorMessage])
 
   useEffect(() => {
-    if (refDidMount.current){
+    if (refDidMount.current) {
       let error = ''
       if (!name) {
         error = 'Please enter your name'
@@ -51,7 +51,7 @@ const SignUp = ({navigation}) => {
         error = 'Please enter your email'
       } else if (!validateEmail(email)) {
         error = 'Please verify your email'
-      }  else if (password.length < 6) {
+      } else if (password.length < 6) {
         error = 'The password must contain 6 characters at least'
       } else if (password !== passwordConfirm) {
         error = 'Password need to match'
@@ -65,7 +65,7 @@ const SignUp = ({navigation}) => {
   const _handleSingInBtnPress = async () => {
     try {
       spinner.start()
-      const {user} = await signUp({name, email, password, photo})
+      const user = await signUp({name, email, password, photo})
       setUser(user)
     } catch (e) {
       Alert.alert('Sign up error', e.message)
