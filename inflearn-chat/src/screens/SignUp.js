@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useContext} from "react";
 import styled from "styled-components/native";
 import {Button, Image, Input, ErrorMessage} from '../components'
 import {useSafeAreaInsets} from "react-native-safe-area-context";
@@ -6,6 +6,7 @@ import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 import {signUp} from "../firebase";
 import {Alert} from "react-native";
 import {validateEmail, removeWhitespace} from "../utils";
+import {UserContext, ProgressContext} from "../contexts";
 
 const Container = styled.View`
   flex: 1;
@@ -20,6 +21,9 @@ const DEFAULT_IMAGE = 'https://firebasestorage.googleapis.com/v0/b/inflearn-chat
 
 const SignUp = ({navigation}) => {
   const insets = useSafeAreaInsets()
+
+  const {setUser} = useContext(UserContext)
+  const {spinner} = useContext(ProgressContext)
 
   const [photo, setPhoto] = useState(DEFAULT_IMAGE)
   const [name, setName] = useState('');
@@ -60,10 +64,13 @@ const SignUp = ({navigation}) => {
 
   const _handleSingInBtnPress = async () => {
     try {
-      const user = await signUp({name, email, password, photo})
-      navigation.navigate('Profile', {user})
+      spinner.start()
+      const {user} = await signUp({name, email, password, photo})
+      setUser(user)
     } catch (e) {
       Alert.alert('Sign up error', e.message)
+    } finally {
+      spinner.stop()
     }
   }
 

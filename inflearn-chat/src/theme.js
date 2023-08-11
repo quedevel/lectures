@@ -27,4 +27,8 @@ export const theme = {
   inputLabel: Colors.grey_1,
   inputPlaceHolder: Colors.grey_1,
   inputBorder: Colors.grey_1,
+
+  // Spinner
+  spinnerBackground: Colors.black,
+  spinnerIndicator: Colors.white,
 }
