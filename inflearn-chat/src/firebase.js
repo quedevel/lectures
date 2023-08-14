@@ -1,7 +1,13 @@
 import {initializeApp} from "firebase/app";
 import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut} from 'firebase/auth'
-import {getFirestore, doc, setDoc} from "firebase/firestore"
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signOut
+} from 'firebase/auth'
+import {getFirestore, doc, setDoc, collection, addDoc} from "firebase/firestore"
 import config from '../firebase.json';
 
 const app = initializeApp(config)
@@ -60,17 +66,27 @@ export const signout = async () => {
   return {}
 }
 
-const db = getFirestore(app)
+export const db = getFirestore(app)
 
 export const createChannel = async ({title, desc}) => {
-  const newChannelRef = doc(db,'channels', title)
+  const newChannelRef = doc(db, 'channels', title)
   const id = newChannelRef.id
   const newChannel = {
     id,
     title,
     description: desc,
-    create: Date.now(),
+    createdAt: Date.now(),
   }
   await setDoc(newChannelRef, newChannel);
   return id;
+}
+
+export const createdMessage = async ({channelId, message}) => {
+  const channelsRef = doc(db, 'channels', channelId);
+  const messagesRef = collection(channelsRef, 'messages');
+  const messagesDocRef = doc(messagesRef, message._id);
+  await setDoc(messagesDocRef,{
+    ...message,
+    createdAt: Date.now()
+  })
 }

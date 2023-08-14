@@ -65,6 +65,7 @@ const Input = forwardRef(
           onFocus={() => setIsFocused(true)}
           secureTextEntry={isPassword}
           editable={!disabled}
+          keyboardAppearance="dark"
         />
       </Container>
     )
