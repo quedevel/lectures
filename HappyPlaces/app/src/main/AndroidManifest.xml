@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <application
+    android:allowBackup="true"
+    android:dataExtractionRules="@xml/data_extraction_rules"
+    android:fullBackupContent="@xml/backup_rules"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/Theme.HappyPlaces"
+    tools:targetApi="31">
+    <activity
+      android:exported="false"
+      android:label="HAPPY PLACE DETAIL"
+      android:name=".activities.HappyPlaceDetailActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/CustomNoActionBarTheme" />
+
+    <activity
+      android:exported="false"
+      android:label="ADD HAPPY PLACE"
+      android:name=".activities.AddHappyPlaceActivity"
+      android:screenOrientation="portrait"
+      android:theme="@style/CustomNoActionBarTheme" />
+    <activity
+      android:exported="true"
+      android:name=".activities.MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <meta-data
+      android:name="com.google.android.geo.API_KEY"
+      android:value="YOUR_API_KEY" />
+  </application>
+
+  <uses-feature
+    android:name="android.hardware.camera"
+    android:required="false" />
+  <uses-permission
+    android:minSdkVersion="33"
+    android:name="android.permission.READ_MEDIA_AUDIO" />
+  <uses-permission
+    android:maxSdkVersion="32"
+    android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission
+    android:maxSdkVersion="32"
+    android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission
+    android:minSdkVersion="33"
+    android:name="android.permission.READ_MEDIA_IMAGES" />
+
+  <uses-permission
+    android:minSdkVersion="33"
+    android:name="android.permission.READ_MEDIA_VIDEO" />
+
+</manifest>
